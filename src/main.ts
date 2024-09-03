@@ -1,3 +1,5 @@
+import { initializeTransactionalContext } from 'typeorm-transactional';
+
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
@@ -8,6 +10,8 @@ import { AppModule } from './app.module';
 const appConfig = config().app;
 
 async function bootstrap() {
+  initializeTransactionalContext();
+
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(

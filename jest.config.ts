@@ -19,6 +19,9 @@ const config: JestConfigWithTsJest = {
     '^@src/(.*)$': '<rootDir>/$1',
   },
 
+  // setup file
+  setupFilesAfterEnv: ['<rootDir>/test/setup-env.ts'],
+
   moduleFileExtensions: ['js', 'json', 'ts'],
   collectCoverageFrom: ['**/*.(t|j)s'],
   coverageDirectory: '../coverage',

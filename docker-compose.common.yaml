@@ -10,6 +10,14 @@ services:
       - POSTGRES_DB=core
     volumes:
       - pgdata:/var/lib/postgresql/data
+  test_database:
+    image: postgres:13.7-alpine
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test_core
 
 volumes:
   pgdata:

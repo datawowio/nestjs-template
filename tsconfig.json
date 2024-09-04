@@ -27,6 +27,6 @@
       "@usecase/*": ["src/usecase/*"],
       "@src/*": ["src/*"]
     },
-    "types": ["@types/jest"]
+    "types": ["@types/jest", "node"]
   }
 }

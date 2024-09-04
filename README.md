@@ -1,6 +1,5 @@
 # Datawow: NestJS Project Template
 
-
 ### What are you looking for 👀
 
 - [how template work ?](./tutorial/how-template-work.md)
@@ -12,7 +11,6 @@
 - [rule and formatter](#rule-and-formatter)
 - [new joiner check list](./tutorial/new-joiner-check-list.md)
 - [new joiner practical example](./tutorial/new-joiner-practical-example.md)
-
 
 ---
 
@@ -32,7 +30,10 @@
 ---
 
 #### rule and formatter
+
 - checking `.eslintrc.js`
 - checking `.prettierrc.js`
 
+reference
 
+- [ts-node impot alias](https://medium.com/@ctrlaltmonique/resolving-paths-cannot-find-module-error-in-tsconfig-json-0fce4758b7dc)

@@ -18,17 +18,16 @@ import {
   UserRepository,
 } from './repository';
 
-const dbConfig = config().database;
-
 export const DataSourceProvider = {
   provide: DataSource,
   useFactory: async () => {
-    const dataSource = await getInitializedDataSource(dbConfig);
+    const dataSource = await getInitializedDataSource(config());
     return addTransactionalDataSource(dataSource);
   },
 };
 
-export const getInitializedDataSource = (dbConfig): Promise<DataSource> => {
+export const getInitializedDataSource = (config): Promise<DataSource> => {
+  const dbConfig = config.database;
   const dataSource = new DataSource({
     type: 'postgres',
     host: dbConfig.host,
@@ -37,7 +36,8 @@ export const getInitializedDataSource = (dbConfig): Promise<DataSource> => {
     password: dbConfig.password,
     database: dbConfig.name,
     entities: [User, Order, Product],
-    synchronize: true,
+    synchronize: false,
+    migrationsRun: false,
   } as DataSourceOptions);
 
   return dataSource.initialize();

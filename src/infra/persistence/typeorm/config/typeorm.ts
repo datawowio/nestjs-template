@@ -1,14 +1,15 @@
 import * as dotenv from 'dotenv';
 import 'module-alias/register';
 import { DataSource } from 'typeorm';
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
-import config from '../../../configuration/config';
+import config from '@infra/configuration/config';
 
 dotenv.config();
 
 const dbConfig = config().database;
 
-export const connection = new DataSource({
+export const connectionOption: PostgresConnectionOptions = {
   type: 'postgres',
   host: dbConfig.host,
   port: dbConfig.port,
@@ -20,4 +21,6 @@ export const connection = new DataSource({
   synchronize: false,
   migrationsRun: false,
   logging: true,
-});
+};
+
+export const connection = new DataSource(connectionOption);

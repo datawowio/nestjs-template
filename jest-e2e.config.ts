@@ -5,7 +5,7 @@ const config: JestConfigWithTsJest = {
 
   // setup root dir project
   rootDir: 'src',
-  testRegex: '.*\\.spec\\.ts$',
+  testRegex: '.*\\.e2e-spec\\.ts$',
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },

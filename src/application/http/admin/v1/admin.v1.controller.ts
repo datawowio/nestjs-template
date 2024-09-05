@@ -10,6 +10,7 @@ import {
 import { GetOrderSummaryUseCase } from '@usecase/order/get-order-summary.usecase';
 import { AddProductUseCase } from '@usecase/product/add-product.usecase';
 import { GetProductListUseCase } from '@usecase/product/get-product-list.usecase';
+import { AdminGetUsersUseCase } from '@usecase/user/admin-get-users.usecase';
 
 import { CreateProductDto } from '@core/domain/product/dto/create-product.dto';
 
@@ -22,6 +23,7 @@ export class AdminV1Controller {
     private addProductUseCase: AddProductUseCase,
     private getProductListUseCase: GetProductListUseCase,
     private getOrderSummaryUseCase: GetOrderSummaryUseCase,
+    private adminGetUsersUseCase: AdminGetUsersUseCase,
   ) {}
 
   @Post('products')
@@ -63,6 +65,21 @@ export class AdminV1Controller {
       Ok(orderSummary) {
         return {
           data: orderSummary,
+        };
+      },
+      Err() {
+        throw new BadRequestException();
+      },
+    });
+  }
+
+  @Get('users')
+  async getUsers() {
+    const result = await this.adminGetUsersUseCase.exec();
+    return match(result, {
+      Ok(users) {
+        return {
+          data: users,
         };
       },
       Err() {

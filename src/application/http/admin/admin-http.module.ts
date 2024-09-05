@@ -2,11 +2,12 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 
 import { OrderModule } from '@application/module/order/order.module';
 import { ProductModule } from '@application/module/product/product.module';
+import { UserModule } from '@application/module/user/user.module';
 
 import { AdminV1Controller } from './v1/admin.v1.controller';
 
 @Module({
-  imports: [ProductModule, OrderModule],
+  imports: [ProductModule, OrderModule, UserModule],
   providers: [],
   controllers: [AdminV1Controller],
 })

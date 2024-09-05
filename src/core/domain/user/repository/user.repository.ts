@@ -9,4 +9,12 @@ export abstract class IUserRepository {
     id?: number;
     email?: string;
   }): Promise<UserEntity>;
+
+  abstract findAllUser({
+    id,
+    email,
+  }: {
+    id?: number;
+    email?: string;
+  }): Promise<UserEntity[]>;
 }

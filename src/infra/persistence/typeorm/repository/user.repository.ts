@@ -30,4 +30,15 @@ export class UserRepository
     const user = await this.repository.findOne({ where: { email, id } });
     return user;
   }
+
+  async findAllUser({
+    id,
+    email,
+  }: {
+    id?: number;
+    email?: string;
+  }): Promise<UserEntity[]> {
+    const users = await this.repository.find({ where: { email, id } });
+    return users;
+  }
 }

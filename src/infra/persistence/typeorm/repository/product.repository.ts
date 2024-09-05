@@ -20,8 +20,17 @@ export class ProductRepository
     super(repository.target, repository.manager, repository.queryRunner);
   }
 
-  async findAllProduct({ id }: { id: number[] }): Promise<ProductEntity[]> {
-    const products = await this.repository.find({ where: { id: In(id) } });
+  async findAllProduct(query: { id: number[] }): Promise<ProductEntity[]> {
+    let where = {};
+
+    if (query?.id) {
+      where = {
+        ...where,
+        id: In(query.id),
+      };
+    }
+
+    const products = await this.repository.find({ where });
     return products;
   }
 }

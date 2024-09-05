@@ -1,4 +1,5 @@
 import * as request from 'supertest';
+import { DataSource } from 'typeorm';
 
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -8,6 +9,8 @@ import { TestUtils } from '@test/utils/test-utils';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  let dataSource: DataSource;
+  let testUtils: TestUtils;
 
   TestUtils.setup();
 
@@ -20,6 +23,11 @@ describe('AppController (e2e)', () => {
 
     app.setGlobalPrefix('api');
 
+    dataSource = app.get(DataSource);
+
+    testUtils = new TestUtils(dataSource);
+
+    await testUtils.reloadFixtures();
     await app.init();
   });
 

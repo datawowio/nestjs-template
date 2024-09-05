@@ -26,7 +26,7 @@ export class UserSingUpUseCase implements IUserSignUpUseCase {
 
     const newUser = await this.userRepository.save<UserEntity>({
       firstname: userSignupCommand.firstname,
-      lastname: userSignupCommand.firstname,
+      lastname: userSignupCommand.lastname,
       email: userSignupCommand.email,
       password: userSignupCommand.password,
       orders: [],

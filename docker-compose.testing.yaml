@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  test_database:
+    image: postgres:13.7-alpine
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test_core

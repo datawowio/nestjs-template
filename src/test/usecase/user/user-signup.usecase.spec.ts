@@ -9,6 +9,8 @@ import { TypeOrmPersistenceModule } from '@infra/persistence/typeorm/typeorm.mod
 
 import { TestUtils } from '../../utils/test-utils';
 
+// This unit-test using real repository implementation
+
 describe('UserSingInUseCase', () => {
   let userSingUpUseCase: UserSingUpUseCase;
   let testUtils: TestUtils;
@@ -32,7 +34,7 @@ describe('UserSingInUseCase', () => {
     dataSource = module.get<DataSource>(DataSource);
 
     testUtils = new TestUtils(dataSource);
-    testUtils.reloadFixtures();
+    await testUtils.reloadFixtures();
   });
 
   it('should return user when signup successful"', async () => {

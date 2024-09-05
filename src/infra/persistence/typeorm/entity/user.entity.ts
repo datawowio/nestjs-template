@@ -5,6 +5,7 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  Unique,
   UpdateDateColumn,
 } from 'typeorm';
 
@@ -28,6 +29,7 @@ export class User implements UserEntity {
   password: string;
 
   @Column({ name: 'email', nullable: false, type: 'varchar' })
+  @Unique(['email'])
   email: string;
 
   @OneToMany(() => Order, (order) => order.user)

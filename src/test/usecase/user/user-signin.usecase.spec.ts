@@ -12,6 +12,8 @@ const mockUserRepository = {
   }),
 };
 
+// This unit-test using mock method
+
 describe('UserSingInUseCase', () => {
   let userSingInUseCase: UserSingInUseCase;
 

@@ -10,6 +10,12 @@ services:
       - POSTGRES_DB=core
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - nestjs_template_common
 
 volumes:
   pgdata:
+
+networks:
+  nestjs_template_common:
+    name: nestjs_template_common

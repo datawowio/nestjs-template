@@ -8,3 +8,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: test_core
+    networks:
+      - nestjs_template_testing
+
+networks:
+  nestjs_template_testing:
+    name: nestjs_template_testing

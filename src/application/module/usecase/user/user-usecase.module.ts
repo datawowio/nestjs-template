@@ -8,4 +8,4 @@ import { UserSingUpUseCase } from '@usecase/user/user-signup.usecase';
   providers: [UserSingInUseCase, UserSingUpUseCase, AdminGetUsersUseCase],
   exports: [UserSingInUseCase, UserSingUpUseCase, AdminGetUsersUseCase],
 })
-export class UserModule {}
+export class UserUseCaseModule {}

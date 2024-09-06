@@ -1,17 +1,13 @@
 import { DataSource } from 'typeorm';
 
-import { ConfigModule } from '@nestjs/config';
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 import { UserSingUpUseCase } from '@usecase/user/user-signup.usecase';
-
-import config from '@infra/configuration/config';
-import { TypeOrmPersistenceModule } from '@infra/persistence/typeorm/typeorm.module';
 
 import { TestUtils } from '../../utils/test-utils';
 
 // This unit-test using real repository implementation
 
-describe('UserSingInUseCase', () => {
+describe('UserSingUpUseCase', () => {
   let userSingUpUseCase: UserSingUpUseCase;
   let testUtils: TestUtils;
   let dataSource: DataSource;
@@ -19,14 +15,7 @@ describe('UserSingInUseCase', () => {
   TestUtils.setup();
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmPersistenceModule,
-        ConfigModule.forRoot({
-          isGlobal: true,
-          load: [config],
-        }),
-      ],
+    const module: TestingModule = await TestUtils.createTestModuleUtil({
       providers: [UserSingUpUseCase],
     }).compile();
 

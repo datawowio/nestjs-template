@@ -7,4 +7,4 @@ import { GetProductListUseCase } from '@usecase/product/get-product-list.usecase
   providers: [AddProductUseCase, GetProductListUseCase],
   exports: [AddProductUseCase, GetProductListUseCase],
 })
-export class ProductModule {}
+export class ProductUseCaseModule {}

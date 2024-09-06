@@ -8,4 +8,4 @@ import { GetOrderSummaryUseCase } from '@usecase/order/get-order-summary.usecase
   providers: [CreateOrderUseCase, EditOrderUseCase, GetOrderSummaryUseCase],
   exports: [CreateOrderUseCase, EditOrderUseCase, GetOrderSummaryUseCase],
 })
-export class OrderModule {}
+export class OrderUseCaseModule {}

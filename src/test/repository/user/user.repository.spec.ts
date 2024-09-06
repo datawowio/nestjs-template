@@ -1,19 +1,14 @@
 import { DataSource } from 'typeorm';
 
-import { ConfigModule } from '@nestjs/config';
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 
 import { UserEntity } from '@core/domain/user/entity/user.entity';
 import { IUserRepository } from '@core/domain/user/repository/user.repository';
 
-import config from '@infra/configuration/config';
 import { User } from '@infra/persistence/typeorm/entity/user.entity';
 import { UserRepository } from '@infra/persistence/typeorm/repository';
-import { TypeOrmPersistenceModule } from '@infra/persistence/typeorm/typeorm.module';
 
 import { TestUtils } from '../../utils/test-utils';
-
-// This unit-test using real repository implementation
 
 describe('UserRepository', () => {
   let testUtils: TestUtils;
@@ -23,15 +18,8 @@ describe('UserRepository', () => {
   TestUtils.setup();
 
   beforeAll(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmPersistenceModule,
-        ConfigModule.forRoot({
-          isGlobal: true,
-          load: [config],
-        }),
-      ],
-    }).compile();
+    const module: TestingModule =
+      await TestUtils.createTestModuleUtil().compile();
 
     dataSource = module.get<DataSource>(DataSource);
     userRepository = module.get<UserRepository>(IUserRepository);

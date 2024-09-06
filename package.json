@@ -16,9 +16,9 @@
     "test": "yarn test:db-setup && dotenv -e .env.test -- jest --config ./jest.config.ts --runInBand",
     "test:cov": "yarn test:db-setup && dotenv -e .env.test -- jest --config ./jest.config.ts --runInBand --coverage",
     "test:debug": "yarn test:db-setup && dotenv -e .env.test -- jest --config ./jest.config.ts --runInBand --detectOpenHandles",
-    "test:e2e": "yarn test:db-setup && dotenv -e .env.test -- jest --config ./jest-e2e.config.ts --runInBand",
-    "test:e2e-cov": "yarn test:db-setup && dotenv -e .env.test -- jest --config ./jest-e2e.config.ts --runInBand --coverage",
-    "test:e2e-debug": "yarn test:db-setup && dotenv -e .env.test -- jest --config ./jest-e2e.config.ts --runInBand --coverage --detectOpenHandles",
+    "test:e2e": "yarn test:db-reset && dotenv -e .env.test -- jest --config ./jest-e2e.config.ts --runInBand",
+    "test:e2e-cov": "yarn test:db-reset && dotenv -e .env.test -- jest --config ./jest-e2e.config.ts --runInBand --coverage",
+    "test:e2e-debug": "yarn test:db-reset && dotenv -e .env.test -- jest --config ./jest-e2e.config.ts --runInBand --coverage --detectOpenHandles",
     "typeorm": "ts-node --project ./tsconfig.json ./node_modules/typeorm/cli",
     "app:migrate-generate": "dotenv -e .env -- yarn typeorm migration:generate -d src/infra/persistence/typeorm/config/typeorm.ts src/infra/persistence/typeorm/migrations/app-migrate",
     "app:migrate-create": "dotenv -e .env -- yarn typeorm migration:create src/infra/persistence/typeorm/migrations/app-migrate",
@@ -27,9 +27,10 @@
     "app:db-tearup": "docker compose -f ./docker-compose.common.yaml up -d",
     "app:db-teardown": "docker compose -f ./docker-compose.common.yaml down",
     "test:migrate-run": "dotenv -e .env.test -- yarn typeorm migration:run -d src/infra/persistence/typeorm/config/typeorm.ts",
-    "test:db-teardown": "docker compose -f ./docker-compose.testing.yaml down",
     "test:db-tearup": "docker compose -f ./docker-compose.testing.yaml up -d",
-    "test:db-setup": "yarn test:db-teardown && yarn test:db-tearup && yarn test:migrate-run"
+    "test:db-teardown": "docker compose -f ./docker-compose.testing.yaml down",
+    "test:db-setup": "yarn test:db-tearup && yarn test:migrate-run",
+    "test:db-reset": "yarn test:db-teardown && yarn test:db-setup"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

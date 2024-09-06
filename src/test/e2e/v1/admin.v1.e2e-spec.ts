@@ -1,15 +1,16 @@
 import * as request from 'supertest';
 import { DataSource } from 'typeorm';
 
-import { INestApplication, VersioningType } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '@src/app.module';
+import { INestApplication } from '@nestjs/common';
+import { TestingModule } from '@nestjs/testing';
 
 import { User } from '@infra/persistence/typeorm/entity';
 
+import { AdminV1Controller } from '@application/http/admin/v1/admin.v1.controller';
+
 import { TestUtils } from '@test/utils/test-utils';
 
-describe('Admin API (e2e)', () => {
+describe('Admin API V1 (e2e)', () => {
   let app: INestApplication;
   let dataSource: DataSource;
   let testUtils: TestUtils;
@@ -17,16 +18,11 @@ describe('Admin API (e2e)', () => {
   TestUtils.setup();
 
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+    const moduleFixture: TestingModule = await TestUtils.createTestModuleUtil({
+      controllers: [AdminV1Controller],
     }).compile();
 
     app = moduleFixture.createNestApplication();
-
-    app.setGlobalPrefix('api');
-    app.enableVersioning({
-      type: VersioningType.URI,
-    });
 
     dataSource = app.get(DataSource);
 
@@ -59,10 +55,10 @@ describe('Admin API (e2e)', () => {
     ]);
   });
 
-  describe('/api/v1/admin/users (GET)', () => {
+  describe('/admin/users (GET)', () => {
     it('should successfully to register a new user with email john@test.com', async () => {
       const response = await request(app.getHttpServer())
-        .get('/api/v1/admin/users')
+        .get('/admin/users')
         .set('Accept', 'application/json');
 
       expect(response.status).toEqual(200);

@@ -4,25 +4,21 @@ import { ConfigModule } from '@nestjs/config';
 import config from '@infra/configuration/config';
 import { TypeOrmPersistenceModule } from '@infra/persistence/typeorm/typeorm.module';
 
-import { AdminHttpModule } from '@application/http/admin/admin-http.module';
-import { HealthHttpModule } from '@application/http/health/health-http.module';
-import { PublicHttpModule } from '@application/http/pubic/public-http.module';
-import { UserHttpModule } from '@application/http/user/user-http.module';
+import { HttpModule } from '@application/http/http.module';
+import { UseCaseModule } from '@application/module/usecase/usecase.module';
 
 @Module({
   imports: [
-    // infra
+    // Global Module
     ConfigModule.forRoot({
       isGlobal: true,
       load: [config],
     }),
+    UseCaseModule,
     TypeOrmPersistenceModule,
 
     // application
-    AdminHttpModule,
-    UserHttpModule,
-    PublicHttpModule,
-    HealthHttpModule,
+    HttpModule,
   ],
   controllers: [],
   providers: [],

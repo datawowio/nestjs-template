@@ -1,7 +1,7 @@
 import * as request from 'supertest';
 import { DataSource } from 'typeorm';
 
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, VersioningType } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '@src/app.module';
 
@@ -20,8 +20,10 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-
     app.setGlobalPrefix('api');
+    app.enableVersioning({
+      type: VersioningType.URI,
+    });
 
     dataSource = app.get(DataSource);
 
@@ -31,9 +33,9 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/api/health (GET)', () => {
+  it('/api/v1/health (GET)', () => {
     return request(app.getHttpServer())
-      .get('/api/health')
+      .get('/api/v1/health')
       .expect(200)
       .expect('application good health !!!');
   });

@@ -4,19 +4,17 @@ import { DataSource } from 'typeorm';
 import { INestApplication } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateOrderUseCase } from '@usecase/order/create-order.usecase';
-import { EditOrderUseCase } from '@usecase/order/edit-order.usecase';
-import { GetProductListUseCase } from '@usecase/product/get-product-list.usecase';
 
 import config from '@infra/configuration/config';
 import { Product } from '@infra/persistence/typeorm/entity';
 import { TypeOrmPersistenceModule } from '@infra/persistence/typeorm/typeorm.module';
 
 import { UserV1Controller } from '@application/http/user/v1/user.v1.controller';
+import { UseCaseModule } from '@application/module/usecase/usecase.module';
 
 import { TestUtils } from '@test/utils/test-utils';
 
-describe('User V1 API (e2e)', () => {
+describe('User API V1 (e2e)', () => {
   let app: INestApplication;
   let dataSource: DataSource;
   let testUtils: TestUtils;
@@ -31,9 +29,9 @@ describe('User V1 API (e2e)', () => {
           isGlobal: true,
           load: [config],
         }),
+        UseCaseModule,
       ],
       controllers: [UserV1Controller],
-      providers: [CreateOrderUseCase, EditOrderUseCase, GetProductListUseCase],
     }).compile();
 
     app = moduleFixture.createNestApplication();

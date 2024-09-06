@@ -1,15 +1,20 @@
 import * as request from 'supertest';
 import { DataSource } from 'typeorm';
 
-import { INestApplication, VersioningType } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '@src/app.module';
 
+import config from '@infra/configuration/config';
 import { User } from '@infra/persistence/typeorm/entity';
+import { TypeOrmPersistenceModule } from '@infra/persistence/typeorm/typeorm.module';
+
+import { AdminV1Controller } from '@application/http/admin/v1/admin.v1.controller';
+import { UseCaseModule } from '@application/module/usecase/usecase.module';
 
 import { TestUtils } from '@test/utils/test-utils';
 
-describe('Admin API (e2e)', () => {
+describe('Admin API V1 (e2e)', () => {
   let app: INestApplication;
   let dataSource: DataSource;
   let testUtils: TestUtils;
@@ -18,15 +23,18 @@ describe('Admin API (e2e)', () => {
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [
+        TypeOrmPersistenceModule,
+        ConfigModule.forRoot({
+          isGlobal: true,
+          load: [config],
+        }),
+        UseCaseModule,
+      ],
+      controllers: [AdminV1Controller],
     }).compile();
 
     app = moduleFixture.createNestApplication();
-
-    app.setGlobalPrefix('api');
-    app.enableVersioning({
-      type: VersioningType.URI,
-    });
 
     dataSource = app.get(DataSource);
 
@@ -59,10 +67,10 @@ describe('Admin API (e2e)', () => {
     ]);
   });
 
-  describe('/api/v1/admin/users (GET)', () => {
+  describe('/admin/users (GET)', () => {
     it('should successfully to register a new user with email john@test.com', async () => {
       const response = await request(app.getHttpServer())
-        .get('/api/v1/admin/users')
+        .get('/admin/users')
         .set('Accept', 'application/json');
 
       expect(response.status).toEqual(200);

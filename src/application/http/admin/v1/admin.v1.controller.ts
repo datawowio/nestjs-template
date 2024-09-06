@@ -4,12 +4,15 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
 } from '@nestjs/common';
 import { GetOrderSummaryUseCase } from '@usecase/order/get-order-summary.usecase';
 import { AddProductUseCase } from '@usecase/product/add-product.usecase';
 import { GetProductListUseCase } from '@usecase/product/get-product-list.usecase';
+import { RemoveProductUseCase } from '@usecase/product/remove-product.usecase';
 import { AdminGetUsersUseCase } from '@usecase/user/admin-get-users.usecase';
 
 import { CreateProductDto } from '@core/domain/product/dto/create-product.dto';
@@ -24,6 +27,7 @@ export class AdminV1Controller {
     private getProductListUseCase: GetProductListUseCase,
     private getOrderSummaryUseCase: GetOrderSummaryUseCase,
     private adminGetUsersUseCase: AdminGetUsersUseCase,
+    private removeProductUseCase: RemoveProductUseCase,
   ) {}
 
   @Post('products')
@@ -54,6 +58,23 @@ export class AdminV1Controller {
       },
       Err() {
         throw new BadRequestException();
+      },
+    });
+  }
+
+  @Delete('products/:productId')
+  async removeProduct(@Param('productId') productId: string) {
+    const result = await this.removeProductUseCase.exec(Number(productId));
+    return match(result, {
+      Ok(deletedProduct) {
+        return {
+          success: true,
+          message: 'item was deleted',
+          data: deletedProduct,
+        };
+      },
+      Err(msg) {
+        throw new BadRequestException(msg);
       },
     });
   }

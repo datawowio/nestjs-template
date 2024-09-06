@@ -20,6 +20,10 @@ export class ProductRepository
     super(repository.target, repository.manager, repository.queryRunner);
   }
 
+  async findProduct(query: { id: number }): Promise<ProductEntity> {
+    return await this.repository.findOneBy({ id: query.id });
+  }
+
   async findAllProduct(query: { id: number[] }): Promise<ProductEntity[]> {
     let where = {};
 
@@ -32,5 +36,11 @@ export class ProductRepository
 
     const products = await this.repository.find({ where });
     return products;
+  }
+
+  async deleteProduct(productId: number): Promise<ProductEntity> {
+    const target = await this.repository.findOne({ where: { id: productId } });
+    await this.repository.delete({ id: target.id });
+    return target;
   }
 }

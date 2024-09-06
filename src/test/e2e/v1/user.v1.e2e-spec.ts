@@ -2,15 +2,11 @@ import * as request from 'supertest';
 import { DataSource } from 'typeorm';
 
 import { INestApplication } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 
-import config from '@infra/configuration/config';
 import { Product } from '@infra/persistence/typeorm/entity';
-import { TypeOrmPersistenceModule } from '@infra/persistence/typeorm/typeorm.module';
 
 import { UserV1Controller } from '@application/http/user/v1/user.v1.controller';
-import { UseCaseModule } from '@application/module/usecase/usecase.module';
 
 import { TestUtils } from '@test/utils/test-utils';
 
@@ -22,15 +18,7 @@ describe('User API V1 (e2e)', () => {
   TestUtils.setup();
 
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmPersistenceModule,
-        ConfigModule.forRoot({
-          isGlobal: true,
-          load: [config],
-        }),
-        UseCaseModule,
-      ],
+    const moduleFixture: TestingModule = await TestUtils.createTestModuleUtil({
       controllers: [UserV1Controller],
     }).compile();
 

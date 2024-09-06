@@ -1,6 +1,15 @@
 import { DataSource, EntityMetadata } from 'typeorm';
 import { initializeTransactionalContext } from 'typeorm-transactional';
 
+import { ModuleMetadata } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { Test, TestingModuleBuilder } from '@nestjs/testing';
+
+import config from '@infra/configuration/config';
+import { TypeOrmPersistenceModule } from '@infra/persistence/typeorm/typeorm.module';
+
+import { UseCaseModule } from '@application/module/usecase/usecase.module';
+
 export class TestUtils {
   _dataSource: DataSource;
 
@@ -10,6 +19,26 @@ export class TestUtils {
 
   static setup() {
     initializeTransactionalContext();
+  }
+
+  static createTestModuleUtil(
+    moduleMetadata?: ModuleMetadata,
+  ): TestingModuleBuilder {
+    return Test.createTestingModule({
+      imports: [
+        // predefine essential module testing need
+        TypeOrmPersistenceModule,
+        ConfigModule.forRoot({
+          isGlobal: true,
+          load: [config],
+        }),
+        UseCaseModule,
+        ...(moduleMetadata?.imports || []),
+      ],
+      controllers: [...(moduleMetadata?.controllers || [])],
+      providers: [...(moduleMetadata?.providers || [])],
+      exports: [...(moduleMetadata?.exports || [])],
+    });
   }
 
   async getEntities(): Promise<EntityMetadata[]> {

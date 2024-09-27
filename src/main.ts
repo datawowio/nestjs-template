@@ -3,16 +3,15 @@ import { initializeTransactionalContext } from 'typeorm-transactional';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
-import config from '@infra/configuration/config';
+import { ConfigurationService } from '@infra/configuration/config.service';
 
 import { AppModule } from './app.module';
-
-const appConfig = config().app;
 
 async function bootstrap() {
   initializeTransactionalContext();
 
   const app = await NestFactory.create(AppModule);
+  const appConfig = app.get(ConfigurationService);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -23,9 +22,9 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
   });
-  app.setGlobalPrefix(appConfig.prefix);
+  app.setGlobalPrefix(appConfig.app.prefix);
 
-  await app.listen(appConfig.port);
+  await app.listen(appConfig.app.port);
 }
 
 bootstrap();
